@@ -15,7 +15,7 @@ sudo docker network create pg-net
 [(https://github.com/mimiks0/otus_dba/tree/lesson2/InstalledDockerAndDCreateDockerNet.JPG)]
 
 3. Далее установил  утсановил mc  и сделал каталог /var/lib/postgres
-4.
+
 [(https://github.com/mimiks0/otus_dba/tree/lesson2/CreateCatalogPostgres.JPG)]
 
 4. Подключил созданную сеть к контейнеру сервера Postgres:
