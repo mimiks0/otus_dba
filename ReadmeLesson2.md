@@ -4,7 +4,7 @@
 
 
 
-1. Вначале создал две витуальные машины и установил на них Docker Engine
+1. Вначале создал две виртуальные машины и установил на них Docker Engine
 
 curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh && rm get-docker.sh && sudo usermod -aG docker $USER
 [(https://github.com/mimiks0/otus_dba/tree/lesson2/InstalledDocker.JPG)]
@@ -14,7 +14,7 @@ curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh && r
 sudo docker network create pg-net
 [(https://github.com/mimiks0/otus_dba/tree/lesson2/InstalledDockerAndDCreateDockerNet.JPG)]
 
-3. Далее установил  утсановил mc  и сделал каталог /var/lib/postgres
+3. Далее установил  mc  и создал каталог /var/lib/postgres
 
 [(https://github.com/mimiks0/otus_dba/tree/lesson2/CreateCatalogPostgres.JPG)]
 
@@ -113,5 +113,5 @@ SELECT * FROM persons;
 
 
 P.S. Попробовал добавить сслыки  на картинки в файле readme.
-Так же  при выполении ДЗ были проблемы связанные с тем, что процессы в докере изолированы
-и к ним надо подключатся изнутри контейнера ( раза 4 наверное удалял и пересоздавал контейнеры пока это не осознал).
+Так же  при выполении ДЗ у меня  были проблемы связанные с тем, что процессы в докере изолированы
+и к ним надо подключаться изнутри контейнера ( раза 4 наверное удалял и пересоздавал контейнеры пока это не осознал).
