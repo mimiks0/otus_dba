@@ -5,10 +5,12 @@
 
 
 1. Вначале создал две витуальные машины и установил на них Docker Engine
+
 curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh && rm get-docker.sh && sudo usermod -aG docker $USER
 [(https://github.com/mimiks0/otus_dba/tree/lesson2/InstalledDocker.JPG)]
 
 2.  Потом Создаk на одном из серверов docker-сеть: 
+
 sudo docker network create pg-net
 [(https://github.com/mimiks0/otus_dba/tree/lesson2/InstalledDockerAndDCreateDockerNet.JPG)]
 
@@ -42,8 +44,11 @@ psql -p 5432 -U postgres help-h localhost -d postgres -W
 CREATE DATABASE dzdocker;
 \c dzdocker;
 CREATE TABLE persons(id serial, first_name text, second_name text);
+
 INSERT INTO persons(first_name, second_name) values('Nikolay', 'Miheev');
+
 INSERT INTO persons(first_name, second_name) values('docker', 'dockerov');
+
 
 В итоге получил результат:
 [(https://github.com/mimiks0/otus_dba/tree/lesson2/CreateTableWithSomeStokes.JPG)]
@@ -82,6 +87,7 @@ sudo docker rm 90b31e02ac1c4d7c9c1bfda443a092f62163a96c5bd37207f6cb8300c31ac34c
 
 
 sudo docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres -d -v /var/lib/postgres:/var/lib/postgresql/data postgres:14
+
 sudo docker run -it --rm --network pg-net --name pg-client postgres:14 psql -h pg-server -U postgres
 
 - Потом зашел внутрь контейнера
