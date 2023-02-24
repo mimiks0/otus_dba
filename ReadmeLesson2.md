@@ -25,7 +25,7 @@ sudo docker run --name pg-server --network pg-net -e POSTGRES_PASSWORD=postgres 
 
 sudo docker run -it --rm --network pg-net --name pg-client postgres:14 psql -h pg-server -U postgres;
 
-- Убеждился, что контейнер запущен:
+- Убедился, что контейнер запущен:
 
    sudo docker ps -a
    
@@ -52,7 +52,7 @@ INSERT INTO persons(first_name, second_name) values('docker', 'dockerov');
 6.  Со втрого сервера без установленного Docker(server7) :
 
 
-- Вначале попробовал  подключиться к  напрямую  к Postres и поучили ошибку:
+- Вначале попробовал  подключиться к  напрямую  к Postres и поучил ошибку:
 
 psql -p 5432 -U postgres -h 192.168.1.99 -d postgres -W
 
@@ -60,7 +60,8 @@ psql -p 5432 -U postgres -h 192.168.1.99 -d postgres -W
 [(https://github.com/mimiks0/otus_dba/tree/lesson2/DporConnectionFormServer7.JPG)]
 
 
-- Для обхода этого подключился по ssh к серверу c  установеленным Докером (server 6):
+- Для обхода этого подключился по ssh к серверу c  установленным Докером (server 6):
+
    ssh  min@192.168.1.99
 
 
@@ -75,7 +76,7 @@ sudo docker rm 90b31e02ac1c4d7c9c1bfda443a092f62163a96c5bd37207f6cb8300c31ac34c
 [(https://github.com/mimiks0/otus_dba/tree/lesson2/StopAndDeleteDockeConteynerOnClient.JPG)]
 
 
-7. На основной машине ( server 6):
+7. На основной машине c установленным ранее Докером(server 6):
 
 - Начал новую сессию и  запустили  контенер docker :
 
@@ -102,4 +103,4 @@ SELECT * FROM persons;
 [(https://github.com/mimiks0/otus_dba/tree/lesson2/DataОnTabelsAfterReconection.JPG)]
 
 
-P.S. В основоном  при выполении ДЗ были проблемы связанные с тем, что процессы в докере изолированы и к ним надо подключатся изнутри контейнера ( разf 4 наверное пересоздаовал контейнеры пока это не осознал).
+P.S. В основоном  при выполении ДЗ были проблемы связанные с тем, что процессы в докере изолированы и к ним надо подключатся изнутри контейнера ( раза 4 наверное удалял и пересоздаовал контейнеры пока это не осознал).
