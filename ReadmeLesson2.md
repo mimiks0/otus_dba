@@ -9,12 +9,13 @@
 curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh && rm get-docker.sh && sudo usermod -aG docker $USER
 [(https://github.com/mimiks0/otus_dba/tree/lesson2/InstalledDocker.JPG)]
 
-2.  Потом Создаk на одном из серверов docker-сеть: 
+2.  Потом Создал на одном из серверов docker-сеть (server6): 
 
 sudo docker network create pg-net
 [(https://github.com/mimiks0/otus_dba/tree/lesson2/InstalledDockerAndDCreateDockerNet.JPG)]
 
 3. Далее установил  утсановил mc  и сделал каталог /var/lib/postgres
+4.
 [(https://github.com/mimiks0/otus_dba/tree/lesson2/CreateCatalogPostgres.JPG)]
 
 4. Подключил созданную сеть к контейнеру сервера Postgres:
@@ -42,7 +43,9 @@ psql -p 5432 -U postgres help-h localhost -d postgres -W
 - Сделал таблицу с парой строк:
 
 CREATE DATABASE dzdocker;
+
 \c dzdocker;
+
 CREATE TABLE persons(id serial, first_name text, second_name text);
 
 INSERT INTO persons(first_name, second_name) values('Nikolay', 'Miheev');
@@ -57,7 +60,7 @@ INSERT INTO persons(first_name, second_name) values('docker', 'dockerov');
 6.  Со втрого сервера без установленного Docker(server7) :
 
 
-- Вначале попробовал  подключиться к  напрямую  к Postres и поучил ошибку:
+- Вначале попробовал  подключиться к  напрямую  к Postgres и получил ошибку:
 
 psql -p 5432 -U postgres -h 192.168.1.99 -d postgres -W
 
@@ -98,7 +101,7 @@ sudo docker exec -it pg-server bash
 
 psql -p 5432 -U postgres help-h localhost -d postgres -W
 
--Проверил, что данные остались на месте
+- Проверил, что данные остались на месте
 
 \l
 
@@ -109,4 +112,6 @@ SELECT * FROM persons;
 [(https://github.com/mimiks0/otus_dba/tree/lesson2/DataОnTabelsAfterReconection.JPG)]
 
 
-P.S. В основоном  при выполении ДЗ были проблемы связанные с тем, что процессы в докере изолированы и к ним надо подключатся изнутри контейнера ( раза 4 наверное удалял и пересоздаовал контейнеры пока это не осознал).
+P.S. Попробовал добавить сслыки  на картинки в файле readme.
+Так же  при выполении ДЗ были проблемы связанные с тем, что процессы в докере изолированы
+и к ним надо подключатся изнутри контейнера ( раза 4 наверное удалял и пересоздаовал контейнеры пока это не осознал).
