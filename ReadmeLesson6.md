@@ -33,11 +33,12 @@ INSERT INTO test values('1');
 
 
 [(https://github.com/mimiks0/otus_dba/tree/lesson6/CreateTableWithValues.JPG)]
+[(https://github.com/mimiks0/otus_dba/tree/lesson6/InsertValuesInTable.JPG)]
 
 
 ### 2.  Добавление диска и монтирование его внурть VM:
 
-- Для этого вначале остановил postgres, потом VM  и добавил Диск
+- Для этого вначале остановил PostrgeSQL, потом VM  и добавил Диск
 
 sudo -u postgres pg_ctlcluster 14 main stop
 
