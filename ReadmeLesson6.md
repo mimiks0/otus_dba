@@ -31,9 +31,10 @@ CREATE TABLE test(c1 text);
 
 INSERT INTO test values('1');
 
-
 [(https://github.com/mimiks0/otus_dba/tree/lesson6/CreateTableWithValues.JPG)]
+
 [(https://github.com/mimiks0/otus_dba/tree/lesson6/InsertValuesInTable.JPG)]
+
 
 
 ### 2.  Добавление диска и монтирование его внурть VM:
