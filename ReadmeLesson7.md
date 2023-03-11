@@ -43,7 +43,7 @@ INSERT INTO t1 values(1);
 
 CREATE role readonly;
 
-[(https://github.com/mimiks0/otus_dba/tree/lesson67/CreateRoleReadOnly.JPG)]
+[(https://github.com/mimiks0/otus_dba/tree/lesson7/CreateRoleReadOnly.JPG)]
 
 
 - Далее  новой роли дали право на  подключение к базе данных testdb и на использование схемы testnm и ее таблиц
@@ -62,7 +62,7 @@ grant SELECT on all TABLEs in SCHEMA testnm TO readonly;
 CREATE USER testread with password 'test123';
 
  
-[(https://github.com/mimiks0/otus_dba/tree/lesson7/NewDiskOnUbuntu.JPG)]
+[(https://github.com/mimiks0/otus_dba/tree/lesson7/CreateUSERandGrantReadonly.JPG)]
 
 - Далее зашел проробовал переключиться  пользователем testread в базу данных testdb и получили ошибку подключения
 
@@ -112,7 +112,7 @@ CREATE TABLE testnm.t1(c1 integer);
 
 INSERT INTO testnm.t1 values(1);
 
-[(https://github.com/mimiks0/otus_dba/tree/lesson7/ReCreateTableT1)]
+[(https://github.com/mimiks0/otus_dba/tree/lesson7/ReCreateTableT1.JPG)]
 
 
 - После этого делаю select * from testnm.t1 и ничего не получаю.
@@ -136,7 +136,7 @@ ALTER default privileges in SCHEMA testnm grant SELECT on TABLEs to readonly;
     
 select * from testnm.t1;
   
-[(https://github.com/mimiks0/otus_dba/tree/lesson7/2NOSelectTableT1.JPG)] - резульат тот же  (ошибка доступа)
+[(https://github.com/mimiks0/otus_dba/tree/lesson7/2NOSelectTableT1.JPG)] - результат тот же  (ошибка доступа)
 
 
 - Получается ,что Alter grant  будет действовать только на новые таблицы. Поэтому повторяю грант и смотрю результат :
@@ -150,7 +150,7 @@ select * from testnm.t1;
 
   [(https://github.com/mimiks0/otus_dba/tree/lesson7/ResultSelectTable.JPG]  
   - в итоге данные показались 
-  ( за капотом остались экперименты с ALTER default privileges in SCHEMA public grant SELECT on TABLEs to readonly -поэтому сразу сработало); 
+  ( за капотом остались экперименты с search_path  и последующим добавлением  роли readonly привелегий делать grant SELECT в схеме public -поэтому сразу сработало); 
   
 
   
@@ -181,7 +181,7 @@ Select current_user;
   
 - Это объясняется тем, что при выполении предыдущего задания давал права только на Select в схеме public (скорее всего уже выполнил revoke) ;
  
-- Поэтому дадим в яную права на создание объектов в Public ( тбалицы по умолчанию создаются там):
+- Поэтому дадим в яную права на создание объектов в Public ( таблицы по умолчанию создаются там):
 
 \c testdb postgres;
 
@@ -200,14 +200,20 @@ select * from t2;
 
 [(https://github.com/mimiks0/otus_dba/tree/lesson7/CreateTableT2.JPG)] 
 
-- Теперь убираем  права на создание объектов в Public  и пытаемся создать таблицу T3:
+- Теперь убираем  права на создание объектов в Public  и пытаемся создать таблицу T3
+
 psql;
-\c testdb postgres; 
-revoke CREATE on SCHEMA public FROM public; 
+\c testdb postgres;
+
+revoke CREATE on SCHEMA public FROM public;
+
+
 revoke all on DATABASE testdb FROM public;
 
+
 revoke CREATE on SCHEMA public FROM testread;
- 
+
+
 \c testdb testread; 
 
 
@@ -225,6 +231,6 @@ CREATE TABLE testnm.t3 (c1 integer);
  P.S.   Задолжал много домашек ( был завал на работе) и поэтому ДЗ делал с ориентировкой на шпаргалку.
  
    Однако пришлось все-таки поменять настройки g_hba.conf на md5 и потом разбираться с правами на схемы:
- - Вначале для выполения select *   from testnm.t1  пришлось дать еще пава явно на таблицы Grant, так как alter default работает только на новые БД;
-- Далее надо было дать права на создание таблицы t2  в схеме public, так как в предыдущем пункте уже под капотом оставил только права на select в схеме;
+ - Вначале для выполения select *   from testnm.t1  пришлось дать еще  явно права на таблицы, так как alter default работает только на новые БД;
+- Далее надо было дать права на создание таблицы t2  в схеме public, так как в предыдущем пункте уже под капотом оставил только права на select в схеме public;
 - Так же в задании про таблицу t3 пришлось сделать явный REVOKE на таблицу и пользователя ( насколько понял параметр ALL не всегда отрабатывает на уже существующих обектах). 
