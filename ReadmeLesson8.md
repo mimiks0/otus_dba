@@ -21,17 +21,28 @@ sudo pg_lsclusters
 
 sudo nano /etc/postgresql/14/main/postgresql.conf
  
- max_connections = 40 
+max_connections = 40 
+
 shared_buffers = 1GB 
+
 effective_cache_size = 3GB
+
 maintenance_work_mem = 512MB 
+
 checkpoint_completion_target = 0.9 
+
 wal_buffers = 16MB 
+
 default_statistics_target = 500
+
 random_page_cost = 4
+
 effective_io_concurrency = 2
+
 work_mem = 6553kB 
+
 min_wal_size = 4GB 
+
 max_wal_size = 16GB
 
 
@@ -108,7 +119,7 @@ autovacuum_vacuum_threshold = 25      # Установите больший по
 
 autovacuum_vacuum_scale_factor = 0.05 # Отключить масштабный коэффициент
 
-autovacuum_vacuum_cost_delay=100    #  Vacuum cost delay in milliseconds, for autovacuum ( у меня написалб что это максимальное занчение)
+autovacuum_vacuum_cost_delay=100    #  Vacuum cost delay in milliseconds, for autovacuum ( у меня pg.log написал что это максимальное занчение)
 
 autovacuum_vacuum_cost_limit = 1000   # В зависимости от конфигурации оборудования (в основном дискового ввода-вывода) ограничение стоимости конфигурации
 
@@ -154,7 +165,7 @@ pgbench -c8 -P 60 -T 600 -U postgres postgres;
 - На основе данных из п.2  получил следующий график:
 
   
- [(https://github.com/mimiks0/otus_dba/tree/lesson8/SixMadedPgBench.JPG)]
+ [(https://github.com/mimiks0/otus_dba/tree/lesson8/VacuumDiagram.JPG)]
 
 
 - В итоге получается, что наилучшие параметры достигались при применении рекомендуемых параметров vacuumа, а агрессивные параметры наборот привели к  ухудшению ( хотя при этих параметрах были минимальное время выполения Vacuum) и   их немного снивериловало изменение частоты вызова автовакуума до низкого (300).
