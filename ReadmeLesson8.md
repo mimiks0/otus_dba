@@ -1,7 +1,7 @@
 # Домашнее задание N4
 ## Настройка autovacuum с учетом оптимальной производительности
 
-### 1.  Создание  GCE инстанса типа e2-medium и установка и  псоледующее изменение настройек PostgreSQL 14:
+### 1.  Создание GCE инстанса типа e2-medium и установка и поcледующее изменение настройек PostgreSQL 14:
 
 - Вначале создал  виртуальую машину согласно требуемых характеристик GCE medium и установил в ней PostrgeSQL со стандартными настройками
 
@@ -64,7 +64,7 @@ pgbench -c8 -P 60 -T 600 -U postgres postgres;
 [(https://github.com/mimiks0/otus_dba/tree/lesson8/FistMadedPgBench.JPG)]
 
 
-- Далее решил о постреть на  параметры autovacuum
+- Далее решил  посмотреть на  параметры autovacuum
 
 psql;
 
@@ -79,13 +79,15 @@ SELECT name, setting, context, short_desc FROM pg_settings WHERE name like 'auto
  
  nano /etc/postgresql/14/main/postgresql.conf
  
-autovacuum_vacuum_scale_factor = 0    # Отключить масштабный коэффициент
-autovacuum_vacuum_threshold = 10000   # Установите больший порог, а затем установите порог для каждой таблицы отдельно в соответствии с частотой удаления и обновления каждой таблицы и объемом данных в таблице
-autovacuum_vacuum_cost_limit = 1000   # В зависимости от конфигурации оборудования (в основном дискового ввода-вывода) ограничение стоимости конфигурации
+autovacuum_vacuum_scale_factor = 0   
+autovacuum_vacuum_threshold = 10000   
+autovacuum_vacuum_cost_limit = 1000
+
  
  - Потом перезапустил клатсер и по новму делаю тест:
 
 pg_ctlcluster 14 main restart;
+
 pg_lsclusters
 
 pgbench  -i postgres;
@@ -99,29 +101,34 @@ pgbench -c8 -P 60 -T 600 -U postgres postgres;
 nano /etc/postgresql/14/main/postgresql.conf
  
 autovacuum_max_workers = 2            # max number of autovacuum subprocesses ( у меня 2 процессора)
+
 autovacuum_naptime = 15s              # time between autovacuum runs
+
 autovacuum_vacuum_threshold = 25      # Установите больший порог, а затем установите порог для каждой таблицы отдельно в соответствии с частотой удаления и обновления каждой таблицы и объемом данных в таблице
+
 autovacuum_vacuum_scale_factor = 0.05 # Отключить масштабный коэффициент
+
 autovacuum_vacuum_cost_delay=100    #  Vacuum cost delay in milliseconds, for autovacuum ( у меня написалб что это максимальное занчение)
+
 autovacuum_vacuum_cost_limit = 1000   # В зависимости от конфигурации оборудования (в основном дискового ввода-вывода) ограничение стоимости конфигурации
+
  
  - Потом перезапустил клатсер и по новму делаю тест:
 
 pg_ctlcluster 14 main restart;
-pg_lsclusters
+
+pg_lsclusters;
 
 pgbench  -i postgres;
 
 pgbench -c8 -P 60 -T 600 -U postgres postgres;
  [(https://github.com/mimiks0/otus_dba/tree/lesson8/SecondMadedPgBench.JPG)]
  
- - В итоге получаю разброс и начинаю  играться частотой вызова автовакуума от высокого до низкого
- 
- nano /etc/postgresql/14/main/postgresql.conf
- 
- 
- autovacuum_naptime = 20s, 30s, 300s 
- 
+ - В итоге получаю разброс и начинаю  играться частотой вызова автовакуума от высокого до низкого:
+
+nano /etc/postgresql/14/main/postgresql.conf
+
+autovacuum_naptime = 20s, 30s, 300s 
  
 - Потом перезапускаю  клатсер для каждого случаю и по новму делаю тест:
 
@@ -144,7 +151,7 @@ pgbench -c8 -P 60 -T 600 -U postgres postgres;
 
 ### 3.   Итоги тестирования
 
-- На основе данных из п.2  олучил следующий график:
+- На основе данных из п.2  получил следующий график:
 
   
  [(https://github.com/mimiks0/otus_dba/tree/lesson8/SixMadedPgBench.JPG)]
@@ -154,8 +161,7 @@ pgbench -c8 -P 60 -T 600 -U postgres postgres;
  
 
  P.S.   Во всех случаях по максимальной скорости транзакций я упираюсь в производительность дисковой системы.
+ Так же прилагаю таблицу со всеми исходными данными по замерам:
  
-        Так же прилагаю таблицу со всеми исходными данными по замерам:
-		
-		[(https://github.com/mimiks0/otus_dba/tree/lesson8/Autovacuum.xlsx)]
-        
+ [(https://github.com/mimiks0/otus_dba/tree/lesson8/Autovacuum.xlsx)]
+ 
