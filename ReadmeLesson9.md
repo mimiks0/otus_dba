@@ -11,7 +11,7 @@ sudo apt update && sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y -q && sudo
 
 sudo pg_lsclusters
 
-(https://github.com/mimiks0/otus_dba/tree/lesson9/InstallPostgres14.JPG)]
+[(https://github.com/mimiks0/otus_dba/tree/lesson9/InstallPostgres14.JPG)]
 
 [(https://github.com/mimiks0/otus_dba/tree/lesson9/NewUbuntuVM.JPG)]
 
@@ -56,14 +56,14 @@ sudo su postgres;
 pgbench  -i postgres;
 
   
- [(https://github.com/mimiks0/otus_dba/tree/lesson9/PrePgbench.JPG]
+ [(https://github.com/mimiks0/otus_dba/tree/lesson9/PrePgbench.JPG)]
 
 
 - Далее  запускаю pg_bench на 10 мин
 
 pgbench -P 30 -T 600
 
-[(https://github.com/mimiks0/otus_dba/tree/lesson9/SecondPrePgbench.JPG]
+[(https://github.com/mimiks0/otus_dba/tree/lesson9/SecondPrePgbench.JPG)]
  
 - Потом смотрю  log postgres
 
@@ -71,7 +71,7 @@ pgbench -P 30 -T 600
 tail  /var/log/postgresql/postgresql-14-main.log;
 
 
-[(https://github.com/mimiks0/otus_dba/tree/lesson9/SecondPrePgbench.JPG]
+[(https://github.com/mimiks0/otus_dba/tree/lesson9/LogPostgres.JPG)]
  
 
 - Исходя из привведенного выше скрина выгрузки  из  лога видно, сколько буферов было записано, 
@@ -85,17 +85,19 @@ tail  /var/log/postgresql/postgresql-14-main.log;
 ### 3.   Проверка  данных статистики
 
 - Далее посмотрю статистику из представления pg_stat_bgwriter
+
 psql;
+
 SELECT * FROM pg_stat_bgwriter \gx;
 
 [(https://github.com/mimiks0/otus_dba/tree/lesson9/PgStatBgwriter.JPG]
 
--  Из скрина видо,  что выполненных контрольных точек по расписанию (по достижению checkpoint_timeout) 295  (такое же количество можно было насчитать и в лог файле)
-
+-  Из приложенного выше скриншота  видо,  что выполненных контрольных точек по расписанию (по достижению checkpoint_timeout) 295  (такое же количество можно было насчитать и в лог файле).
 
 - Далее смотрю какие последние lsn для таблиц и к каким файлам они принадлежат
 
 \dt;
+
 CREATE EXTENSION pageinspect;
 
 [(https://github.com/mimiks0/otus_dba/tree/lesson9/CReateExPageinspect.JPG]
@@ -125,14 +127,13 @@ SELECT pg_reload_conf();
 
 [(https://github.com/mimiks0/otus_dba/tree/lesson9/SуеAsynchronous.JPG)]
 
-- Опять  запусткаю pgbench
+- Опять  запускаю pgbench
 
 pgbench -P 30 -T 600
 
 [(https://github.com/mimiks0/otus_dba/tree/lesson9/AcinhronPrePgbench.JPG)]
  
- - В итоге на лицо, что  tps сильно подросли.
- 
+ - В итоге видно, что tps сильно увеличились.
  
  - Далее смотрю еще лог
  
